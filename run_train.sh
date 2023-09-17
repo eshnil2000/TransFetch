@@ -22,7 +22,7 @@ TEST_WARM=$TRAIN_WARM
 TEST_TOTAL=$(($TRAIN+$TEST)) 
 
 #app_list=(410.bwaves-s0.txt.xz)
-app_list=(pr.amazon.trace.scatter.txt)
+app_list=(test.txt)
 
 
 echo "TRAIN/VAL/TEST/SKIP: "$TRAIN"/"$VAL"/"$TEST"/"$SKIP
@@ -34,7 +34,7 @@ mkdir $OUTPUT_ROOT/$VERSION/train
 #for app1 in `ls $LoadTrace_ROOT`; do
 for app1 in ${app_list[*]}; do
 	echo $app1
-	file_path=$LoadTrace_ROOT/${app1}
+	file_path=$LoadTrace_ROOT${app1}
     model_path=$OUTPUT_ROOT/$VERSION/train/${app1}.model.pth
 	#app2=${app1%%.txt*}.trace.xz
 
@@ -43,4 +43,3 @@ for app1 in ${app_list[*]}; do
     
 	echo "done for app "$app1
 done
-
