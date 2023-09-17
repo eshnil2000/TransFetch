@@ -4,10 +4,11 @@ VERSION=1_trans_128_cx
 
 ROOT="./"
 #LoadTrace_ROOT="./SampleData/LoadTraces"
-LoadTrace_ROOT="/home/pengmiao/Disk/work/data/Graph_dataset/IPDPS/GPOP/LoadTraces"
+LoadTrace_ROOT="./"
+
 OUTPUT_ROOT="./res"
 
-Python_ROOT=$ROOT"/TransFetch"
+Python_ROOT=$ROOT"TransFetch"
 
 TRAIN=2
 VAL=1
