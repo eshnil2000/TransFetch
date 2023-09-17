@@ -54,22 +54,29 @@ scheduler = StepLR(optimizer, step_size=step_size, gamma=gamma)
 log=cf.Logger()
 #%%
 
-def train(ep,train_loader,model_save_path):
+
+# Modify the train function to return predictions and targets
+def train(ep, train_loader, model_save_path):
     global steps
     epoch_loss = 0
+    all_predictions = []
+    all_targets = []
     model.train()
-    for batch_idx, (data, ip, page, target)in enumerate(train_loader):#d,t: (torch.Size([64, 1, 784]),64)        
+    for batch_idx, (data, ip, page, target) in enumerate(train_loader):
         optimizer.zero_grad()
-        output = model(data,ip, page)
-        #loss = F.binary_cross_entropy_with_logits(output, target)
-        loss = F.binary_cross_entropy(output, target,reduction='mean')
+        output = model(data, ip, page)
+        loss = F.binary_cross_entropy(output, target, reduction='mean')
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         epoch_loss += loss.item()
-    epoch_loss/=len(train_loader)
-    return epoch_loss
-
+        all_predictions.append(output.detach().cpu().numpy())
+        all_targets.append(target.detach().cpu().numpy())
+    epoch_loss /= len(train_loader)
+    predictions = np.vstack(all_predictions)
+    targets = np.vstack(all_targets)
+    accuracy = accuracy_score(np.round(predictions), targets)
+    return epoch_loss, accuracy
 
 def test(test_loader):
     model.eval()
